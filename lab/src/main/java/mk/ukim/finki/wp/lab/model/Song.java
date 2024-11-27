@@ -5,28 +5,40 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-@Getter
 @Data
 public class Song {
-    private String trackId;
+    private Long trackId;
     private String title;
     private String genre;
     private int releaseYear;
-    List<Artist> performers;
+    private List<Artist> performers;
+    private Album album;
 
-    public Song() {}
-
-    public Song(String trackId, String title, String genre, int releaseYear) {
-        this.trackId = trackId;
+    public Song(String title, String genre, int releaseYear, List<Artist> performers, Album album) {
+        Random random = new Random();
+        this.trackId = random.nextLong(1000, 9999);
         this.title = title;
         this.genre = genre;
         this.releaseYear = releaseYear;
-
-        performers = new ArrayList<>();
+        this.performers = performers;
+        this.album = album;
     }
 
-    public void addPerformer(Artist performer) {
+    public Song(String title, String genre, int releaseYear, Album album) {
+        Random random = new Random();
+        this.trackId = random.nextLong(1000, 9999);
+        this.title = title;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+        this.album = album;
+        this.performers = new ArrayList<>();
+    }
+
+    public Artist addPerformer(Artist performer) {
         performers.add(performer);
+        return performer;
     }
+
 }

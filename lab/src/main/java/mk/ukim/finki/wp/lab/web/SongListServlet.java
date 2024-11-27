@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.service.SongService;
-import mk.ukim.finki.wp.lab.service.impl.SongServiceImpl;
+import mk.ukim.finki.wp.lab.service.impl.SongServiceImplementation;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.web.IWebExchange;
@@ -20,18 +20,17 @@ import java.util.List;
 public class SongListServlet extends HttpServlet {
 
     private final SpringTemplateEngine templateEngine;
-    private final SongServiceImpl songService;
+    private final SongServiceImplementation songService;
 
-    public SongListServlet(SpringTemplateEngine templateEngine, SongServiceImpl songService) {
+    public SongListServlet(SpringTemplateEngine templateEngine, SongServiceImplementation songService) {
         this.templateEngine = templateEngine;
         this.songService = songService;
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Song> songList;
-        songList = songService.listSongs();
-
+        List<Song> songList= songService.listSongs();
         IWebExchange iWebExchange = JakartaServletWebApplication
                 .buildApplication(req.getServletContext())
                 .buildExchange(req, resp);

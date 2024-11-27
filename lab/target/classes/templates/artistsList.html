@@ -1,31 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
-    <title>Add new Performer to Book</title>
-    <style type = "text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
-        table {
-            width:100%;
-        }
-        table, td, th {
-            border: 1px solid black;
-            padding:3px 2px;
-        }
-        section {
-            float: left;
-            margin: 0 1.5%;
-            width: 63%;
-        }
-        aside {
-            float: right;
-            margin: 0 1.5%;
-            width: 30%;
-        }
-    </style>
+    <title>Add new Performer to Song</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e59232f0a1.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
@@ -33,25 +21,21 @@
 </header>
 <section>
     <h2>Select artist:</h2>
-    <!-- Make changes to this code to dynamically display radio buttons for each artist as in the example -->
-    <form th:method="POST" th:action="@{/songs/song-details}">
-        <input type="hidden" name="trackId" th:value="${trackId}" />
-        <div th:each="artist : ${artistList}">
-            <input type="radio" name="artistId" th:id="${artist.getId()}" th:value="${artist.getId()}" />
-            <label th:for="${artist.getId()}" th:text="${artist.getFirstName()} + ' ' + ${artist.getLastName()}"></label>
-            <br/>
+    <form action="/artists/add-to-song" method="POST">
+        <input hidden="hidden" name="trackId" th:value="${trackId}">
+        <div>
+            <input type="radio" th:each="artist : ${artists}" name="artistId" th:value="${artist.getId()}" th:text="${artist.getFirstName()}+' '+${artist.getLastName()}">
         </div>
         <br/>
-
         <input type='submit' value='Add artist'>
     </form>
+
 </section>
 <aside>
     <table>
         <tr>
-            <!-- change to show selected trackId -->
             <td><b>Track Id</b></td>
-            <td th:text="${trackId}">2</td>
+            <td th:text="${trackId}"></td>
         </tr>
     </table>
 </aside>
