@@ -1,10 +1,13 @@
 package mk.ukim.finki.lab1b.web.controllers;
 
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import mk.ukim.finki.lab1b.model.Song;
 import mk.ukim.finki.lab1b.service.AlbumService;
 import mk.ukim.finki.lab1b.service.ArtistService;
 import mk.ukim.finki.lab1b.service.SongService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("songs")
+@RequestMapping({"songs","/"})
 public class SongController {
     private final SongService songService;
     private final AlbumService albumService;
@@ -31,6 +34,7 @@ public class SongController {
         return "listSongs";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public String saveOrUpdateSong(@RequestParam(required = false) Long id,
                                    @RequestParam String title,
@@ -43,12 +47,14 @@ public class SongController {
         songService.save(id,title,trackId,genre,releaseYear,albumId);
         return "redirect:/songs";
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/add-form")
     public String getAddSongPage(Model model){
         model.addAttribute("albums",albumService.findAll());
         return "add-song";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{songId}")
     public String editSong(@PathVariable Long songId,Model model){
         Optional<Song> songToEdit = songService.findById(songId);
@@ -61,12 +67,13 @@ public class SongController {
     }
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{id}")
     public String deleteSong(@PathVariable Long id){
         songService.deleteById(id);
         return "redirect:/songs";
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/performers/delete/{songId}/{performerId}")
     public String deletePerformerFromSong(@PathVariable Long songId, @PathVariable Long performerId) {
         // Remove the performer from the song

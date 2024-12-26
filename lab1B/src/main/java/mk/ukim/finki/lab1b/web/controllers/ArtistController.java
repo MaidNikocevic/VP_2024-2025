@@ -3,6 +3,7 @@ package mk.ukim.finki.lab1b.web.controllers;
 import mk.ukim.finki.lab1b.model.Artist;
 import mk.ukim.finki.lab1b.service.ArtistService;
 import mk.ukim.finki.lab1b.service.SongService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class ArtistController {
         this.songService = songService;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/add-to-song")
     public String chooseArtistForSong(@RequestParam Long songId, Model model){
         List<Artist> artists = artistService.listArtists();
@@ -32,6 +33,7 @@ public class ArtistController {
         return "artistsList";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-to-song")
     public String chooseArtistForSong(@RequestParam Long songId, @RequestParam Long artistId) {
 

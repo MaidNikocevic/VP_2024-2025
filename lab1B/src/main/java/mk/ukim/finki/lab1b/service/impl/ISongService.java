@@ -1,5 +1,8 @@
 package mk.ukim.finki.lab1b.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import mk.ukim.finki.lab1b.model.Album;
 import mk.ukim.finki.lab1b.model.Artist;
 import mk.ukim.finki.lab1b.model.Song;
@@ -18,11 +21,14 @@ public class ISongService implements SongService {
     private final SongRepositoryJPA songRepository;
     private final ArtistRepositoryJPA artistRepository;
     private final AlbumRepositoryJPA albumRepository;
+    @PersistenceContext
+    private final EntityManager entityManager;
 
-    public ISongService(SongRepositoryJPA songRepository, ArtistRepositoryJPA artistRepository, AlbumRepositoryJPA albumRepository) {
+    public ISongService(SongRepositoryJPA songRepository, ArtistRepositoryJPA artistRepository, AlbumRepositoryJPA albumRepository, EntityManager entityManager) {
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
         this.albumRepository = albumRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -78,6 +84,8 @@ public class ISongService implements SongService {
             song.setTrackId(trackId);
             song.setGenre(genre);
             song.setReleaseYear(releaseYear);
+            boolean isManaged = entityManager.contains(song);
+            System.out.println("Is entity managed? " + isManaged);
             songRepository.save(song);
         }
     }
